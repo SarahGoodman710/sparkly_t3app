@@ -34,6 +34,9 @@ export const authOptions: NextAuthOptions = {
     //   clientSecret: env.APPLE_SECRET,
     // }),
   ],
+  pages: {
+    signIn: "/",
+  },
 };
 
 export default NextAuth(authOptions);
