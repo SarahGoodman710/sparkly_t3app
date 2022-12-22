@@ -1,4 +1,4 @@
-import { signIn, useSession } from "next-auth/react";
+import { signIn } from "next-auth/react";
 import Head from "next/head";
 import { useState } from "react";
 import LoadingDots from "../components/app/loading-dots";
@@ -60,7 +60,6 @@ export default function Login() {
 }
 
 const AuthShowcase: React.FC = () => {
-  const { data: sessionData } = useSession();
   const [loading, setLoading] = useState(false);
 
   return (
@@ -68,7 +67,7 @@ const AuthShowcase: React.FC = () => {
       disabled={loading}
       onClick={() => {
         setLoading(true);
-        signIn("google");
+        signIn("google", {callbackUrl: "/"});
       }}
       className={`${
         loading ? "cursor-not-allowed" : ""
