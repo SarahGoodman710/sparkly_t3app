@@ -11,7 +11,7 @@ const SectionContainer = ({
 }: PropsWithChildren<SectionContainerProps>) => (
   <div
     className={classNames(
-      `sm:py-18 container relative mx-auto px-6 py-16 md:py-14 lg:px-16 lg:py-14 xl:px-20`,
+      `sm:py-16 container relative mx-auto px-4 py-14 md:py-12 lg:px-14 lg:py-12 xl:px-18`,
       className
     )}
   >
