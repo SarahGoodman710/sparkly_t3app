@@ -1,12 +1,18 @@
-const HomePage = () =>
-{
-	return (
-		<div >
-			<p>Hello</p>
-		</div>
-	)
-}
+import SectionContainer from "../components/SectionContainer";
+import Payroll from "./Payroll";
+import Header from "../components/Header";
 
-HomePage.auth = true
+const HomePage = () => {
+  return (
+    <div>
+      <Header title="Home" />
+      <SectionContainer>
+        <Payroll />
+      </SectionContainer>
+    </div>
+  );
+};
 
-export default HomePage
+HomePage.auth = true;
+
+export default HomePage;

@@ -5,9 +5,8 @@ import { useSession, signOut } from "next-auth/react";
 import DarkModeToggle from "./DarkModeToggle";
 
 const navigation = [
-  { name: "Dashboard", href: "#", current: true },
-  { name: "Employee", href: "#", current: false },
-  { name: "Projects", href: "#", current: false },
+  { name: "Dashboard", href: "/home", current: true },
+  { name: "Payroll", href: "#", current: false },
 ];
 
 function classNames(...classes) {
