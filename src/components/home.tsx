@@ -1,8 +1,8 @@
-import NavBar from './header/navbar';
+import Layout from './Layout'
 
 const HomeLayout = ({ children }) => {
     return (
-        <NavBar />
+        <Layout />
     );
 };
 

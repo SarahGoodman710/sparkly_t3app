@@ -1,17 +1,18 @@
 import { type AppType } from "next/app";
 import { type Session } from "next-auth";
 import { SessionProvider, useSession } from "next-auth/react";
-import type { NextComponentType  } from 'next' //Import Component type
+import type { NextComponentType } from "next"; //Import Component type
 import { trpc } from "../utils/trpc";
-import type { AppProps } from 'next/app'
-import Home from '../components/home';
+import type { AppProps } from "next/app";
+import Home from "../components/home";
 
 import "../styles/globals.css";
+import { ThemeProvider } from "../lib/theme";
 
 //Add custom appProp type then use union to add it
 type CustomAppProps = AppProps & {
-  Component: NextComponentType & {auth?: boolean} // add auth type
-}
+  Component: NextComponentType & { auth?: boolean }; // add auth type
+};
 
 const MyApp: AppType<{ session: Session | null }> = ({
   Component,
@@ -21,9 +22,11 @@ const MyApp: AppType<{ session: Session | null }> = ({
     <SessionProvider session={session}>
       {Component.auth ? (
         <Auth>
-			<Home>
-				<Component {...pageProps} />
-			</Home>
+          <ThemeProvider>
+            <Home>
+              <Component {...pageProps} />
+            </Home>
+          </ThemeProvider>
         </Auth>
       ) : (
         <Component {...pageProps} />
