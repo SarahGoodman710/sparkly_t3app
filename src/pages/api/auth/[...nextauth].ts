@@ -1,5 +1,7 @@
 import NextAuth, { type NextAuthOptions } from "next-auth";
-import DiscordProvider from "next-auth/providers/discord";
+// import AppleProvider from "next-auth/providers/apple";
+// import FacebookProvider from "next-auth/providers/facebook";
+import GoogleProvider from "next-auth/providers/google";
 // Prisma adapter for NextAuth, optional and can be removed
 import { PrismaAdapter } from "@next-auth/prisma-adapter";
 
@@ -19,12 +21,22 @@ export const authOptions: NextAuthOptions = {
   // Configure one or more authentication providers
   adapter: PrismaAdapter(prisma),
   providers: [
-    // DiscordProvider({
-    //   clientId: env.DISCORD_CLIENT_ID,
-    //   clientSecret: env.DISCORD_CLIENT_SECRET,
+    GoogleProvider({
+      clientId: env.GOOGLE_ID,
+      clientSecret: env.GOOGLE_SECRET,
+    }),
+    // FacebookProvider({
+    //   clientId: env.FACEBOOK_ID,
+    //   clientSecret: env.FACEBOOK_SECRET,
     // }),
-    // ...add more providers here
+    // AppleProvider({
+    //   clientId: env.APPLE_ID,
+    //   clientSecret: env.APPLE_SECRET,
+    // }),
   ],
+  pages: {
+    signIn: "/",
+  },
 };
 
 export default NextAuth(authOptions);
