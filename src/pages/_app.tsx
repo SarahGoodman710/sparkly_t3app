@@ -4,7 +4,7 @@ import { SessionProvider, useSession } from "next-auth/react";
 import type { NextComponentType } from "next"; //Import Component type
 import { trpc } from "../utils/trpc";
 import type { AppProps } from "next/app";
-import Home from "../components/home";
+import Layout from "../components/Layout";
 
 import "../styles/globals.css";
 import { ThemeProvider } from "../lib/theme";
@@ -23,9 +23,9 @@ const MyApp: AppType<{ session: Session | null }> = ({
       {Component.auth ? (
         <Auth>
           <ThemeProvider>
-            <Home>
+            <Layout>
               <Component {...pageProps} />
-            </Home>
+            </Layout>
           </ThemeProvider>
         </Auth>
       ) : (

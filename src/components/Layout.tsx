@@ -25,7 +25,7 @@ const Layout = ({
   return (
     <>
       {!hideHeader && <Nav />}
-      <div className="min-h-screen">
+      <div className="min-h-screen dark:bg-gray-800">
         <main>{children}</main>
       </div>
       {!hideFooter && <Footer />}

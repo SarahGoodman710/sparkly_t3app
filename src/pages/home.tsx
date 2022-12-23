@@ -1,6 +1,10 @@
 const HomePage = () =>
 {
-	return "Hello World"
+	return (
+		<div >
+			<p>Hello</p>
+		</div>
+	)
 }
 
 HomePage.auth = true

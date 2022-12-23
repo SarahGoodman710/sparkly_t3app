@@ -18,9 +18,9 @@ function DarkModeToggle() {
       onClick={() => toggleDarkMode()}
     >
       {isDarkMode ? (
-        <BsFillCloudMoonFill size={22} />
-      ) : (
         <BsFillSunFill size={22} />
+      ) : (
+        <BsFillCloudMoonFill size={22} />
       )}
     </button>
   );
