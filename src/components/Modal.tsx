@@ -1,8 +1,49 @@
 import { Fragment } from "react";
 import { Dialog, Transition } from "@headlessui/react";
 import { XMarkIcon } from "@heroicons/react/24/outline";
+import { useForm, UseFormProps } from "react-hook-form";
+import { trpc } from "../utils/trpc";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { z } from "zod";
+
+// validation schema is used by server
+export const validationSchema = z.object({
+  EmployeeId: z.string(),
+  FirstName: z.string(),
+  LastName: z.string(),
+});
+
+function useZodForm<TSchema extends z.ZodType>(
+  props: Omit<UseFormProps<TSchema["_input"]>, "resolver"> & {
+    schema: TSchema;
+  }
+) {
+  const form = useForm<TSchema["_input"]>({
+    ...props,
+    resolver: zodResolver(props.schema, undefined),
+  });
+
+  return form;
+}
 
 export default function Modal({ isOpen, setIsOpen }) {
+  const utils = trpc.useContext().employee;
+
+  const mutation = trpc.employee.add.useMutation({
+    onSuccess: async () => {
+      await utils.list.invalidate();
+    },
+  });
+
+  const methods = useZodForm({
+    schema: validationSchema,
+    defaultValues: {
+      EmployeeId: "",
+      FirstName: "",
+      LastName: "",
+    },
+  });
+
   return (
     <Transition.Root show={isOpen} as={Fragment}>
       <Dialog as="div" className="relative z-10" onClose={setIsOpen}>
@@ -36,7 +77,13 @@ export default function Modal({ isOpen, setIsOpen }) {
                     onClick={() => setIsOpen(false)}
                   />
                 </div>
-                <form action="#" method="POST">
+                <form
+                  onSubmit={methods.handleSubmit(async (values) => {
+                    await mutation.mutateAsync(values);
+                    methods.reset();
+                    setIsOpen(false);
+                  })}
+                >
                   <div className="space-y-6 bg-white py-6 px-4 sm:p-6">
                     <div>
                       <h3 className="text-lg font-medium leading-6 text-gray-900">
@@ -51,9 +98,7 @@ export default function Modal({ isOpen, setIsOpen }) {
                         Employee Id
                       </label>
                       <input
-                        type="text"
-                        name="EmployeeId"
-                        id="EmployeeId"
+                        {...methods.register("EmployeeId", { required: true })}
                         className="mt-1 block w-full rounded-md border border-gray-300 py-2 px-3 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
                       />
                     </div>
@@ -66,9 +111,7 @@ export default function Modal({ isOpen, setIsOpen }) {
                           First name
                         </label>
                         <input
-                          type="text"
-                          name="first-name"
-                          id="first-name"
+                          {...methods.register("FirstName", { required: true })}
                           className="mt-1 block w-full rounded-md border border-gray-300 py-2 px-3 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
                         />
                       </div>
@@ -81,9 +124,7 @@ export default function Modal({ isOpen, setIsOpen }) {
                           Last name
                         </label>
                         <input
-                          type="text"
-                          name="last-name"
-                          id="last-name"
+                          {...methods.register("LastName", { required: true })}
                           className="mt-1 block w-full rounded-md border border-gray-300 py-2 px-3 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
                         />
                       </div>

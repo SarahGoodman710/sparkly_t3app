@@ -26,7 +26,7 @@ const tableHeaders = [
 ];
 
 const Employee = () => {
-  const employees = trpc.employee.getAll.useQuery();
+  const employees = trpc.employee.list.useQuery();
 
   return (
     <div>
