@@ -1,9 +1,10 @@
 import Header from "../../components/Header";
-import TableAddButton from "../../components/TableAddButton";
 import TableHeader from "../../components/TableHeader";
 import SectionContainer from "../../components/SectionContainer";
 import { trpc } from "../../utils/trpc";
 import { PencilSquareIcon, TrashIcon } from "@heroicons/react/24/outline";
+import Modal from "../../components/EmployeeModal";
+import { useState } from "react";
 
 const tableHeaders = [
   {
@@ -26,6 +27,14 @@ const tableHeaders = [
 ];
 
 const Employee = () => {
+  interface EmployeeData {
+    EmployeeId: string;
+    FirstName: string;
+    LastName: string;
+  }
+
+  const [isOpen, setIsOpen] = useState(false);
+  const [employee, setEmployee] = useState<EmployeeData | null>(null);
   const employees = trpc.employee.list.useQuery();
 
   return (
@@ -36,7 +45,23 @@ const Employee = () => {
           <div className="sm:flex sm:items-center">
             <div className="sm:flex-auto"></div>
             <div className="mt-4 sm:mt-0 sm:ml-16 sm:flex-none">
-              <TableAddButton text="Add Employee" />
+              <div>
+                <Modal
+                  isOpen={isOpen}
+                  setIsOpen={setIsOpen}
+                  employee={employee}
+                />
+                <button
+                  type="button"
+                  className="inline-flex items-center justify-center rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 sm:w-auto"
+                  onClick={() => {
+                    setIsOpen(true);
+                    setEmployee(null);
+                  }}
+                >
+                  Add Employee
+                </button>
+              </div>
             </div>
           </div>
           <div className="mt-8 flex flex-col">
@@ -66,6 +91,10 @@ const Employee = () => {
                                 <PencilSquareIcon
                                   className="h-6 w-6"
                                   aria-hidden="true"
+                                  onClick={() => {
+                                    setIsOpen(true);
+                                    setEmployee(employee);
+                                  }}
                                 />
                               </span>
                             </a>

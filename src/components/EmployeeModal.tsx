@@ -1,7 +1,7 @@
 import { Fragment } from "react";
 import { Dialog, Transition } from "@headlessui/react";
 import { XMarkIcon } from "@heroicons/react/24/outline";
-import { useForm, UseFormProps } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { trpc } from "../utils/trpc";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
@@ -13,36 +13,50 @@ export const validationSchema = z.object({
   LastName: z.string(),
 });
 
-function useZodForm<TSchema extends z.ZodType>(
-  props: Omit<UseFormProps<TSchema["_input"]>, "resolver"> & {
-    schema: TSchema;
-  }
-) {
-  const form = useForm<TSchema["_input"]>({
-    ...props,
-    resolver: zodResolver(props.schema, undefined),
-  });
-
-  return form;
-}
-
-export default function Modal({ isOpen, setIsOpen }) {
+export default function Modal({ isOpen, setIsOpen, employee }) {
+  const isAddMode = !employee;
   const utils = trpc.useContext().employee;
 
-  const mutation = trpc.employee.add.useMutation({
+  const createUser = trpc.employee.add.useMutation({
     onSuccess: async () => {
       await utils.list.invalidate();
     },
   });
 
-  const methods = useZodForm({
-    schema: validationSchema,
+  const updateUser = trpc.employee.update.useMutation({
+    onSuccess: async () => {
+      await utils.list.invalidate();
+    },
+  });
+
+  function onSubmit(data) {
+    return isAddMode
+      ? createUser.mutateAsync(data)
+      : updateUser.mutateAsync(data);
+  }
+
+  const formOptions = {
+    resolver: zodResolver(validationSchema),
     defaultValues: {
       EmployeeId: "",
       FirstName: "",
       LastName: "",
     },
-  });
+    values: {
+      EmployeeId: "",
+      FirstName: "",
+      LastName: "",
+    },
+  };
+
+  // set default form values if in edit mode
+  if (!isAddMode) {
+    formOptions.values = employee;
+  }
+
+  // get functions to build form with useForm() hook
+  const { register, handleSubmit, reset, formState } = useForm(formOptions);
+  const { errors } = formState;
 
   return (
     <Transition.Root show={isOpen} as={Fragment}>
@@ -78,9 +92,9 @@ export default function Modal({ isOpen, setIsOpen }) {
                   />
                 </div>
                 <form
-                  onSubmit={methods.handleSubmit(async (values) => {
-                    await mutation.mutateAsync(values);
-                    methods.reset();
+                  onSubmit={handleSubmit(async (values) => {
+                    await onSubmit(values);
+                    reset();
                     setIsOpen(false);
                   })}
                 >
@@ -98,8 +112,10 @@ export default function Modal({ isOpen, setIsOpen }) {
                         Employee Id
                       </label>
                       <input
-                        {...methods.register("EmployeeId", { required: true })}
+                        type="text"
+                        {...register("EmployeeId", { required: true })}
                         className="mt-1 block w-full rounded-md border border-gray-300 py-2 px-3 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
+                        disabled={!isAddMode}
                       />
                     </div>
                     <div className="grid grid-cols-6 gap-6">
@@ -111,7 +127,8 @@ export default function Modal({ isOpen, setIsOpen }) {
                           First name
                         </label>
                         <input
-                          {...methods.register("FirstName", { required: true })}
+                          type="text"
+                          {...register("FirstName", { required: true })}
                           className="mt-1 block w-full rounded-md border border-gray-300 py-2 px-3 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
                         />
                       </div>
@@ -124,7 +141,8 @@ export default function Modal({ isOpen, setIsOpen }) {
                           Last name
                         </label>
                         <input
-                          {...methods.register("LastName", { required: true })}
+                          type="text"
+                          {...register("LastName", { required: true })}
                           className="mt-1 block w-full rounded-md border border-gray-300 py-2 px-3 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
                         />
                       </div>
