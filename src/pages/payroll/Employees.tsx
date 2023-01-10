@@ -3,7 +3,8 @@ import TableHeader from "../../components/TableHeader";
 import SectionContainer from "../../components/SectionContainer";
 import { trpc } from "../../utils/trpc";
 import { PencilSquareIcon, TrashIcon } from "@heroicons/react/24/outline";
-import Modal from "../../components/EmployeeModal";
+import Modal from "../../components/Modal";
+import EmployeeForm from "../../components/EmployeeForm";
 import { useState } from "react";
 
 const tableHeaders = [
@@ -49,8 +50,9 @@ const Employee = () => {
                 <Modal
                   isOpen={isOpen}
                   setIsOpen={setIsOpen}
-                  employee={employee}
-                />
+                >
+					<EmployeeForm setIsOpen={setIsOpen} employee={employee}/>
+				</Modal>
                 <button
                   type="button"
                   className="inline-flex items-center justify-center rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 sm:w-auto"
