@@ -60,7 +60,7 @@ const Bonuses = () => {
                             {bonus.bonusType.BonusTypeKey}
                           </td>
                           <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-						  	<NumericFormat value={bonus.Amount} displayType={'text'} thousandSeparator={true} prefix={'$'} />
+						  	{/*<NumericFormat value={bonus.Amount} displayType={'text'} thousandSeparator={true} prefix={'$'} />*/}
                           </td>
                           <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
                             {bonus.Date.toDateString()}
