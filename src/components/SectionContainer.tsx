@@ -3,6 +3,7 @@ import { PropsWithChildren } from "react";
 
 interface SectionContainerProps {
   className?: string;
+  children?: React.ReactNode
 }
 
 const SectionContainer = ({

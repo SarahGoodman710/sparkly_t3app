@@ -1,12 +1,11 @@
 import { router, protectedProcedure } from "../trpc";
 import { z } from "zod";
-import { Prisma } from "@prisma/client";
 
-const defaultPostSelect = Prisma.validator<Prisma.PostSelect>()({
+const defaultPostSelect = {
   EmployeeId: true,
   FirstName: true,
   LastName: true,
-});
+};
 
 export const employeeRouter = router({
   list: protectedProcedure.query(async ({ ctx }) => {

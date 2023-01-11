@@ -4,6 +4,7 @@ import TableHeader from "../../components/TableHeader";
 import SectionContainer from "../../components/SectionContainer";
 import { trpc } from "../../utils/trpc";
 import { PencilSquareIcon } from "@heroicons/react/24/outline";
+import { NumericFormat } from 'react-number-format';
 
 const tableHeaders = [
   {
@@ -59,7 +60,7 @@ const Bonuses = () => {
                             {bonus.bonusType.BonusTypeKey}
                           </td>
                           <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-                            ${bonus.Amount}
+						  	<NumericFormat value={bonus.Amount} displayType={'text'} thousandSeparator={true} prefix={'$'} />
                           </td>
                           <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
                             {bonus.Date.toDateString()}

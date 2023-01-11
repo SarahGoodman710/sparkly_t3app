@@ -36,7 +36,14 @@ const Employee = () => {
 
   const [isOpen, setIsOpen] = useState(false);
   const [employee, setEmployee] = useState<EmployeeData | null>(null);
+  const utils = trpc.useContext().employee;
   const employees = trpc.employee.list.useQuery();
+
+  const deleteUser = trpc.employee.delete.useMutation({
+    onSuccess: async () => {
+      await utils.list.invalidate();
+    },
+  });
 
   return (
     <div>
@@ -108,6 +115,7 @@ const Employee = () => {
                                 <TrashIcon
                                   className="h-6 w-6"
                                   aria-hidden="true"
+								  onClick={() => deleteUser.mutateAsync(employee)}
                                 />
                               </span>
                             </a>
