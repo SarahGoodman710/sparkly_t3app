@@ -6,7 +6,7 @@ export default function Grid({ title, actions }) {
   return (
     <div>
       <div className="mx-auto max-w-7xl pb-6">
-        <h1 className="text-3xl font-bold tracking-tight text-gray-900">
+        <h1 className="text-3xl font-bold tracking-tight text-on-background">
           {title}
         </h1>
       </div>

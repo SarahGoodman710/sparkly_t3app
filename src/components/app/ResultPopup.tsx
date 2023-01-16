@@ -1,9 +1,9 @@
 import { motion } from "framer-motion";
 import { Fragment, useState } from "react";
 import { Transition } from "@headlessui/react";
-import { CheckCircleIcon } from "@heroicons/react/24/outline";
+import { CheckCircleIcon, XCircleIcon } from "@heroicons/react/24/outline";
 
-export default function Sucess() {
+export default function ResultPopup({ isSucess }) {
   const [isOpen, setIsOpen] = useState(true);
 
   return (
@@ -27,7 +27,11 @@ export default function Sucess() {
                 }}
                 onAnimationComplete={() => setIsOpen(false)}
               >
-                <CheckCircleIcon className="text-secondary" />
+                {isSucess ? (
+                  <CheckCircleIcon className="text-secondary" />
+                ) : (
+                  <XCircleIcon className="text-error" />
+                )}
                 &nbsp;
               </motion.div>
             </div>
