@@ -22,7 +22,7 @@ const tableHeaders = [
 ];
 
 const Businesses = () => {
-  const businesses = trpc.business.getAll.useQuery();
+  const businesses = trpc.business.list.useQuery();
 
   return (
     <div>

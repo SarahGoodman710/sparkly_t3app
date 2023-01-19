@@ -1,14 +1,14 @@
 import { router, protectedProcedure } from "../trpc";
 
 const defaultPostSelect = {
-  BusinessId: true,
-  BusinessKey: true,
+  TipTypeId: true,
+  TipTypeKey: true,
   Description: true,
 };
 
-export const businessRouter = router({
+export const tipTypeRouter = router({
   list: protectedProcedure.query(async ({ ctx }) => {
-    return await ctx.prisma.business.findMany({
+    return await ctx.prisma.tipType.findMany({
       select: defaultPostSelect,
     });
   }),
